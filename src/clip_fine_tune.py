@@ -418,7 +418,7 @@ def clip_finetune_cirr(num_epochs: int, clip_model_name: str, learning_rate: flo
 
 if __name__ == '__main__':
     parser = ArgumentParser()
-    parser.add_argument("--dataset", type=str, required=True, help="should be either 'CIRR' or 'fashionIQ'")
+    parser.add_argument("--dataset", type=str, required=True, help="should be either 'CIRR' or 'FashionIQ'")
     parser.add_argument("--api-key", type=str, help="api for Comet logging")
     parser.add_argument("--workspace", type=str, help="workspace of Comet logging")
     parser.add_argument("--experiment-name", type=str, help="name of the experiment on Comet")
@@ -458,7 +458,7 @@ if __name__ == '__main__':
         print("Comet logging ENABLED")
         experiment = Experiment(
             api_key=args.api_key,
-            project_name=f"{args.dataset} clip fine-tuning",
+            project_name=f"{args.dataset}-clip-fine-tuning",
             workspace=args.workspace,
             disabled=False
         )
