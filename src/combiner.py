@@ -25,8 +25,8 @@ class Combiner(nn.Module):
         self.output_layer = nn.Linear(hidden_dim, clip_feature_dim)
 
         self.dropout3 = nn.Dropout(0.5)
-        self.dynamic_scalar = nn.Sequential(nn.Linear(projection_dim * 2, hidden_dim), nn.ReLU(), nn.Dropout(0.5),
-                                            nn.Linear(hidden_dim, 1), nn.Sigmoid())
+        # dynamic scalar ?
+        self.dynamic_scalar = nn.Sequential(nn.Linear(projection_dim * 2, hidden_dim), nn.ReLU(), nn.Dropout(0.5), nn.Linear(hidden_dim, 1), nn.Sigmoid())
 
         self.logit_scale = 100
 

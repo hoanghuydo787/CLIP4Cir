@@ -129,3 +129,5 @@ def save_model(name: str, cur_epoch: int, model_to_save: nn.Module, training_pat
         'epoch': cur_epoch,
         model_name: model_to_save.state_dict(),
     }, str(models_path / f'{name}.pt'))
+
+# TODO: add resume training function
