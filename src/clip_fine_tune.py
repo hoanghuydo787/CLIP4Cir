@@ -18,7 +18,7 @@ from tqdm import tqdm
 from data_utils import base_path, squarepad_transform, targetpad_transform, CIRRDataset, FashionIQDataset
 from utils import collate_fn, update_train_running_results, set_train_bar_description, extract_index_features, \
     save_model, generate_randomized_fiq_caption, element_wise_sum, device
-from validate import compute_cirr_val_metrics, compute_fiq_val_metrics
+from validate import compute_cirr_val_metrics, compute_fiq_val_metrics, compute_adidas_val_metrics
 
 
 def clip_finetune_fiq(train_dress_types: List[str], val_dress_types: List[str],
@@ -399,7 +399,7 @@ def clip_finetune_adidas(train_dress_types: List[str], val_dress_types: List[str
                         index_features, index_names = index_features_list[idx], index_names_list[idx]
                     else:
                         index_features, index_names = extract_index_features(classic_val_dataset, clip_model)
-                    recall_at10, recall_at50 = compute_fiq_val_metrics(relative_val_dataset, clip_model,
+                    recall_at10, recall_at50 = compute_adidas_val_metrics(relative_val_dataset, clip_model,
                                                                        index_features, index_names,
                                                                        combining_function)
                     recalls_at10.append(recall_at10)
