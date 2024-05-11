@@ -691,5 +691,5 @@ if __name__ == '__main__':
         clip_finetune_fiq(**training_hyper_params)
     elif args.dataset.lower() == 'adidas':
         training_hyper_params.update(
-            {'train_dress_types': ['general'], 'val_dress_types': ['general']})
+            {'train_dress_types': ['tshirt_and_polo', 'short', 'sportswear', 'jacket', 'tshirt_and_top', 'dress', 'skirt', 'legging', 'jersey', 'tracksuit', 'hoodie', 'pant', 'tight'], 'val_dress_types': ['tshirt_and_polo', 'short', 'sportswear', 'jacket', 'tshirt_and_top', 'dress', 'skirt', 'legging', 'jersey', 'tracksuit', 'hoodie', 'pant', 'tight']})
         clip_finetune_adidas(**training_hyper_params)
