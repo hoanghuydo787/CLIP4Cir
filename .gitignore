@@ -264,3 +264,6 @@ cython_debug/
 
 /fashionIQ_dataset
 /fashionIQ_dataset_1
+fashionIQ_dataset/images/
+fashionIQ_dataset/captions/cap.general.train.json
+fashionIQ_dataset/captions/cap.general.val.json
