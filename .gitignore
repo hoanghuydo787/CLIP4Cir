@@ -262,7 +262,7 @@ cython_debug/
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm+all,python,opencv
 
-/fashionIQ_dataset
+
 /fashionIQ_dataset_1
 fashionIQ_dataset/images/
 fashionIQ_dataset/captions/cap.general.train.json
