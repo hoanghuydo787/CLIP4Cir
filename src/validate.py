@@ -165,10 +165,12 @@ def compute_adidas_val_metrics(relative_val_dataset: FashionIQDataset, clip_mode
     assert torch.equal(torch.sum(labels, dim=-1).int(), torch.ones(len(target_names)).int())
 
     # Compute the metrics
+    recall_at5 = (torch.sum(labels[:, :5]) / len(labels)).item() * 100
     recall_at10 = (torch.sum(labels[:, :10]) / len(labels)).item() * 100
-    recall_at50 = (torch.sum(labels[:, :50]) / len(labels)).item() * 100
+    recall_at15 = (torch.sum(labels[:, :15]) / len(labels)).item() * 100
+    recall_at20 = (torch.sum(labels[:, :20]) / len(labels)).item() * 100
 
-    return recall_at10, recall_at50
+    return recall_at5, recall_at10, recall_at15, recall_at20
 
 
 def generate_adidas_val_predictions(clip_model: CLIP, relative_val_dataset: FashionIQDataset,
@@ -467,120 +469,176 @@ def main():
         print(f"average recall10 = {mean(average_recall10_list)}")
         print(f"average recall50 = {mean(average_recall50_list)}")
     elif args.dataset.lower() == 'adidas':
+        average_recall5_list = []
         average_recall10_list = []
-        average_recall50_list = []
+        average_recall15_list = []
+        average_recall20_list = []
 
-        # tshirt_and_polo_recallat10, tshirt_and_polo_recallat50 = adidas_val_retrieval('tshirt_and_polo', combining_function, clip_model, preprocess)
-        # average_recall10_list.append(tshirt_and_polo_recallat10)
-        # average_recall50_list.append(tshirt_and_polo_recallat50)
+        tshirt_and_polo_recallat5, tshirt_and_polo_recallat10, tshirt_and_polo_recallat15, tshirt_and_polo_recallat20 = adidas_val_retrieval('tshirt_and_polo', combining_function, clip_model, preprocess)
+        average_recall5_list.append(tshirt_and_polo_recallat5)
+        average_recall10_list.append(tshirt_and_polo_recallat10)
+        average_recall15_list.append(tshirt_and_polo_recallat15)
+        average_recall20_list.append(tshirt_and_polo_recallat20)
 
-        # print(f"\n{tshirt_and_polo_recallat10 = }")
-        # print(f"{tshirt_and_polo_recallat50 = }")
+        print(f"\n{tshirt_and_polo_recallat5 = }")
+        print(f"{tshirt_and_polo_recallat10 = }")
+        print(f"{tshirt_and_polo_recallat15 = }")
+        print(f"{tshirt_and_polo_recallat20 = }")
 
-        # short_recallat10, short_recallat50 = adidas_val_retrieval('short', combining_function, clip_model, preprocess)
-        # average_recall10_list.append(short_recallat10)
-        # average_recall50_list.append(short_recallat50)
+        short_recallat5, short_recallat10, short_recallat15, short_recallat20 = adidas_val_retrieval('short', combining_function, clip_model, preprocess)
+        average_recall5_list.append(short_recallat5)
+        average_recall10_list.append(short_recallat10)
+        average_recall50_list.append(short_recallat15)
+        average_recall50_list.append(short_recallat20)
             
-        # print(f"{short_recallat10 = }")
-        # print(f"{short_recallat50 = }")
+        print(f"\n{short_recallat5 = }")
+        print(f"{short_recallat10 = }")
+        print(f"{short_recallat15 = }")
+        print(f"{short_recallat20 = }")
 
 
-        # sportswear_recallat10, sportswear_recallat50 = adidas_val_retrieval('sportswear', combining_function, clip_model, preprocess)
-        # average_recall10_list.append(sportswear_recallat10)
-        # average_recall50_list.append(sportswear_recallat50)
+        sportswear_recallat5, sportswear_recallat10, sportswear_recallat15, sportswear_recallat20 = adidas_val_retrieval('sportswear', combining_function, clip_model, preprocess)
+        average_recall5_list.append(sportswear_recallat5)
+        average_recall10_list.append(sportswear_recallat10)
+        average_recall15_list.append(sportswear_recallat15)
+        average_recall20_list.append(sportswear_recallat20)
             
-        # print(f"{sportswear_recallat10 = }")
-        # print(f"{sportswear_recallat50 = }")
+        print(f"\n{sportswear_recallat5 = }")
+        print(f"{sportswear_recallat10 = }")
+        print(f"{sportswear_recallat15 = }")
+        print(f"{sportswear_recallat20 = }")
 
 
-        # jacket_recallat10, jacket_recallat50 = adidas_val_retrieval('jacket', combining_function, clip_model, preprocess)
-        # average_recall10_list.append(jacket_recallat10)
-        # average_recall50_list.append(jacket_recallat50)
+        jacket_recallat5, jacket_recallat10, jacket_recallat15, jacket_recallat20 = adidas_val_retrieval('jacket', combining_function, clip_model, preprocess)
+        average_recall5_list.append(jacket_recallat5)
+        average_recall10_list.append(jacket_recallat10)
+        average_recall15_list.append(jacket_recallat15)
+        average_recall20_list.append(jacket_recallat20)
             
-        # print(f"{jacket_recallat10 = }")
-        # print(f"{jacket_recallat50 = }")
+        print(f"\n{jacket_recallat5 = }")
+        print(f"{jacket_recallat10 = }")
+        print(f"{jacket_recallat15 = }")
+        print(f"{jacket_recallat20 = }")
 
 
-        # tshirt_and_top_recallat10, tshirt_and_top_recallat50 = adidas_val_retrieval('tshirt_and_top', combining_function, clip_model, preprocess)
-        # average_recall10_list.append(tshirt_and_top_recallat10)
-        # average_recall50_list.append(tshirt_and_top_recallat50)
+        tshirt_and_top_recallat5, tshirt_and_top_recallat10, tshirt_and_top_recallat15, tshirt_and_top_recallat20 = adidas_val_retrieval('tshirt_and_top', combining_function, clip_model, preprocess)
+        average_recall5_list.append(tshirt_and_top_recallat5)
+        average_recall10_list.append(tshirt_and_top_recallat10)
+        average_recall15_list.append(tshirt_and_top_recallat15)
+        average_recall20_list.append(tshirt_and_top_recallat20)
             
-        # print(f"{tshirt_and_top_recallat10 = }")
-        # print(f"{tshirt_and_top_recallat50 = }")
+        print(f"\n{tshirt_and_top_recallat5 = }")
+        print(f"{tshirt_and_top_recallat10 = }")
+        print(f"{tshirt_and_top_recallat15 = }")
+        print(f"{tshirt_and_top_recallat20 = }")
 
 
-        # dress_recallat10, dress_recallat50 = adidas_val_retrieval('dress', combining_function, clip_model, preprocess)
-        # average_recall10_list.append(dress_recallat10)
-        # average_recall50_list.append(dress_recallat50)
+        dress_recallat5, dress_recallat10, dress_recallat15, dress_recallat20 = adidas_val_retrieval('dress', combining_function, clip_model, preprocess)
+        average_recall5_list.append(dress_recallat5)
+        average_recall10_list.append(dress_recallat10)
+        average_recall15_list.append(dress_recallat15)
+        average_recall20_list.append(dress_recallat20)
             
-        # print(f"{dress_recallat10 = }")
-        # print(f"{dress_recallat50 = }")
+        print(f"\n{dress_recallat5 = }")
+        print(f"{dress_recallat10 = }")
+        print(f"{dress_recallat15 = }")
+        print(f"{dress_recallat20 = }")
 
 
-        # skirt_recallat10, skirt_recallat50 = adidas_val_retrieval('skirt', combining_function, clip_model, preprocess)
-        # average_recall10_list.append(skirt_recallat10)
-        # average_recall50_list.append(skirt_recallat50)
+        skirt_recallat5, skirt_recallat10 , skirt_recallat15 , skirt_recallat20 = adidas_val_retrieval('skirt', combining_function, clip_model, preprocess)
+        average_recall5_list.append(skirt_recallat5)
+        average_recall10_list.append(skirt_recallat10)
+        average_recall15_list.append(skirt_recallat15)
+        average_recall20_list.append(skirt_recallat20)
             
-        # print(f"{skirt_recallat10 = }")
-        # print(f"{skirt_recallat50 = }")
+        print(f"\n{skirt_recallat5 = }")
+        print(f"{skirt_recallat10 = }")
+        print(f"{skirt_recallat15 = }")
+        print(f"{skirt_recallat20 = }")
 
 
-        # legging_recallat10, legging_recallat50 = adidas_val_retrieval('legging', combining_function, clip_model, preprocess)
-        # average_recall10_list.append(legging_recallat10)
-        # average_recall50_list.append(legging_recallat50)
+        legging_recallat5, legging_recallat10, legging_recallat15, legging_recallat20 = adidas_val_retrieval('legging', combining_function, clip_model, preprocess)
+        average_recall5_list.append(legging_recallat5)
+        average_recall10_list.append(legging_recallat10)
+        average_recall15_list.append(legging_recallat15)
+        average_recall20_list.append(legging_recallat20)
             
-        # print(f"{legging_recallat10 = }")
-        # print(f"{legging_recallat50 = }")
+        print(f"\n{legging_recallat5 = }")
+        print(f"{legging_recallat10 = }")
+        print(f"{legging_recallat15 = }")
+        print(f"{legging_recallat20 = }")
 
 
-        # jersey_recallat10, jersey_recallat50 = adidas_val_retrieval('jersey', combining_function, clip_model, preprocess)
-        # average_recall10_list.append(jersey_recallat10)
-        # average_recall50_list.append(jersey_recallat50)
+        jersey_recallat5, jersey_recallat10, jersey_recallat15, jersey_recallat20 = adidas_val_retrieval('jersey', combining_function, clip_model, preprocess)
+        average_recall5_list.append(jersey_recallat5)
+        average_recall10_list.append(jersey_recallat10)
+        average_recall15_list.append(jersey_recallat15)
+        average_recall20_list.append(jersey_recallat20)
             
-        # print(f"{jersey_recallat10 = }")
-        # print(f"{jersey_recallat50 = }")
+        print(f"\n{jersey_recallat5 = }")
+        print(f"{jersey_recallat10 = }")
+        print(f"{jersey_recallat15 = }")
+        print(f"{jersey_recallat20 = }")
 
 
-        # tracksuit_recallat10, tracksuit_recallat50 = adidas_val_retrieval('tracksuit', combining_function, clip_model, preprocess)
-        # average_recall10_list.append(tracksuit_recallat10)
-        # average_recall50_list.append(tracksuit_recallat50)
+        tracksuit_recallat5, tracksuit_recallat10, tracksuit_recallat15, tracksuit_recallat20 = adidas_val_retrieval('tracksuit', combining_function, clip_model, preprocess)
+        average_recall5_list.append(tracksuit_recallat5)
+        average_recall10_list.append(tracksuit_recallat10)
+        average_recall15_list.append(tracksuit_recallat15)
+        average_recall20_list.append(tracksuit_recallat20)
             
-        # print(f"{tracksuit_recallat10 = }")
-        # print(f"{tracksuit_recallat50 = }")
+        print(f"\n{tracksuit_recallat5 = }")
+        print(f"{tracksuit_recallat10 = }")
+        print(f"{tracksuit_recallat15 = }")
+        print(f"{tracksuit_recallat20 = }")
 
 
-        # hoodie_recallat10, hoodie_recallat50 = adidas_val_retrieval('hoodie', combining_function, clip_model, preprocess)
-        # average_recall10_list.append(hoodie_recallat10)
-        # average_recall50_list.append(hoodie_recallat50)
+        hoodie_recallat5, hoodie_recallat10, hoodie_recallat15, hoodie_recallat20 = adidas_val_retrieval('hoodie', combining_function, clip_model, preprocess)
+        average_recall5_list.append(hoodie_recallat5)
+        average_recall10_list.append(hoodie_recallat10)
+        average_recall15_list.append(hoodie_recallat15)
+        average_recall20_list.append(hoodie_recallat20)
             
-        # print(f"{hoodie_recallat10 = }")
-        # print(f"{hoodie_recallat50 = }")
+        print(f"\n{hoodie_recallat5 = }")
+        print(f"{hoodie_recallat10 = }")
+        print(f"{hoodie_recallat15 = }")
+        print(f"{hoodie_recallat20 = }")
 
 
-        # pant_recallat10, pant_recallat50 = adidas_val_retrieval('pant', combining_function, clip_model, preprocess)
-        # average_recall10_list.append(pant_recallat10)
-        # average_recall50_list.append(pant_recallat50)
+        pant_recallat5, pant_recallat10, pant_recallat15, pant_recallat20 = adidas_val_retrieval('pant', combining_function, clip_model, preprocess)
+        average_recall5_list.append(pant_recallat5)
+        average_recall10_list.append(pant_recallat10)
+        average_recall15_list.append(pant_recallat15)
+        average_recall20_list.append(pant_recallat20)
             
-        # print(f"{pant_recallat10 = }")
-        # print(f"{pant_recallat50 = }")
+        print(f"\n{pant_recallat5 = }")
+        print(f"{pant_recallat10 = }")
+        print(f"{pant_recallat15 = }")
+        print(f"{pant_recallat20 = }")
 
 
-        # tight_recallat10, tight_recallat50 = adidas_val_retrieval('tight', combining_function, clip_model, preprocess)
-        # average_recall10_list.append(tight_recallat10)
-        # average_recall50_list.append(tight_recallat50)
-            
-        # print(f"{tight_recallat10 = }")
-        # print(f"{tight_recallat50 = }")
-
-        tight_recallat10, tight_recallat50 = adidas_val_retrieval('general', combining_function, clip_model, preprocess)
+        tight_recallat5, tight_recallat10, tight_recallat15, tight_recallat20 = adidas_val_retrieval('tight', combining_function, clip_model, preprocess)
+        average_recall5_list.append(tight_recallat5)
         average_recall10_list.append(tight_recallat10)
-        average_recall50_list.append(tight_recallat50)
+        average_recall15_list.append(tight_recallat15)
+        average_recall20_list.append(tight_recallat20)
             
+        print(f"\n{tight_recallat5 = }")
         print(f"{tight_recallat10 = }")
-        print(f"{tight_recallat50 = }")
+        print(f"{tight_recallat15 = }")
+        print(f"{tight_recallat20 = }")
 
+        general_recallat5, general_recallat10, general_recallat15, general_recallat20 = adidas_val_retrieval('general', combining_function, clip_model, preprocess)
+            
+        print(f"\n{general_recallat5 = }")
+        print(f"{general_recallat10 = }")
+        print(f"{general_recallat15 = }")
+        print(f"{general_recallat20 = }")
+
+        print(f"\naverage recall5 = {mean(average_recall5_list)}")
         print(f"average recall10 = {mean(average_recall10_list)}")
-        print(f"average recall50 = {mean(average_recall50_list)}")
+        print(f"average recall15 = {mean(average_recall15_list)}")
+        print(f"average recall20 = {mean(average_recall20_list)}")
 
     else:
         raise ValueError("Dataset should be either 'CIRR' or 'FashionIQ' or 'adidas'")
