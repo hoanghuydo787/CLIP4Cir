@@ -388,8 +388,10 @@ def clip_finetune_adidas(train_dress_types: List[str], val_dress_types: List[str
 
         if epoch % validation_frequency == 0:
             with experiment.validate():
+                recalls_at5 = []
                 recalls_at10 = []
-                recalls_at50 = []
+                recalls_at15 = []
+                recalls_at20 = []
 
                 # Compute and log validation metrics for each validation dataset (which corresponds to a different
                 # FashionIQ category)
@@ -399,20 +401,26 @@ def clip_finetune_adidas(train_dress_types: List[str], val_dress_types: List[str
                         index_features, index_names = index_features_list[idx], index_names_list[idx]
                     else:
                         index_features, index_names = extract_index_features(classic_val_dataset, clip_model)
-                    recall_at10, recall_at50 = compute_adidas_val_metrics(relative_val_dataset, clip_model,
+                    recall_at5, recall_at10, recall_at15, recall_at20 = compute_adidas_val_metrics(relative_val_dataset, clip_model,
                                                                        index_features, index_names,
                                                                        combining_function)
+                    recalls_at5.append(recall_at5)
                     recalls_at10.append(recall_at10)
-                    recalls_at50.append(recall_at50)
+                    recalls_at15.append(recall_at15)
+                    recalls_at20.append(recall_at20)
 
                 results_dict = {}
                 for i in range(len(recalls_at10)):
+                    results_dict[f'{idx_to_dress_mapping[i]}_recall_at5'] = recalls_at5[i]
                     results_dict[f'{idx_to_dress_mapping[i]}_recall_at10'] = recalls_at10[i]
-                    results_dict[f'{idx_to_dress_mapping[i]}_recall_at50'] = recalls_at50[i]
+                    results_dict[f'{idx_to_dress_mapping[i]}_recall_at15'] = recalls_at15[i]
+                    results_dict[f'{idx_to_dress_mapping[i]}_recall_at20'] = recalls_at20[i]
                 results_dict.update({
+                    f'average_recall_at5': mean(recalls_at5),
                     f'average_recall_at10': mean(recalls_at10),
-                    f'average_recall_at50': mean(recalls_at50),
-                    f'average_recall': (mean(recalls_at50) + mean(recalls_at10)) / 2
+                    f'average_recall_at15': mean(recalls_at15),
+                    f'average_recall_at20': mean(recalls_at20),
+                    f'average_recall': (mean(recalls_at5) + mean(recalls_at10) + mean(recalls_at15) + mean(recalls_at20)) / 4
                 })
 
                 print(json.dumps(results_dict, indent=4))
@@ -691,5 +699,5 @@ if __name__ == '__main__':
         clip_finetune_fiq(**training_hyper_params)
     elif args.dataset.lower() == 'adidas':
         training_hyper_params.update(
-            {'train_dress_types': ['tshirt_and_polo', 'short', 'sportswear', 'jacket', 'tshirt_and_top', 'dress', 'skirt', 'legging', 'jersey', 'tracksuit', 'hoodie', 'pant', 'tight'], 'val_dress_types': ['tshirt_and_polo', 'short', 'sportswear', 'jacket', 'tshirt_and_top', 'dress', 'skirt', 'legging', 'jersey', 'tracksuit', 'hoodie', 'pant', 'tight']})
+            {'train_dress_types': ['tshirt_and_polo', 'short', 'sportswear', 'jacket', 'tshirt_and_top', 'dress', 'skirt', 'legging', 'jersey', 'tracksuit', 'hoodie', 'pant', 'tight'], 'val_dress_types': ['tshirt_and_polo', 'short', 'sportswear', 'jacket', 'tshirt_and_top', 'dress', 'skirt', 'legging', 'jersey', 'tracksuit', 'hoodie', 'pant', 'tight', 'general']})
         clip_finetune_adidas(**training_hyper_params)
