@@ -18,7 +18,7 @@ from data_utils import base_path, squarepad_transform, FashionIQDataset, targetp
 from combiner import Combiner
 from utils import collate_fn, update_train_running_results, set_train_bar_description, save_model, \
     extract_index_features, generate_randomized_fiq_caption, device
-from validate import compute_cirr_val_metrics, compute_fiq_val_metrics
+from validate import compute_cirr_val_metrics, compute_fiq_val_metrics, compute_adidas_val_metrics
 
 
 def combiner_training_fiq(train_dress_types: List[str], val_dress_types: List[str],
@@ -399,7 +399,7 @@ def combiner_training_adidas(train_dress_types: List[str], val_dress_types: List
                                                                                   index_features_list,
                                                                                   index_names_list,
                                                                                   idx_to_dress_mapping):
-                    recall_at5, recall_at10, recall_at15, recall_at20 = compute_fiq_val_metrics(relative_val_dataset, clip_model, index_features,
+                    recall_at5, recall_at10, recall_at15, recall_at20 = compute_adidas_val_metrics(relative_val_dataset, clip_model, index_features,
                                                                        index_names, combiner.combine_features)
                     recalls_at5.append(recall_at5)
                     recalls_at10.append(recall_at10)
